@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="img/icon_x32.png">
+	<title>Alt Text Creator</title>
+	<link href="css/bootstrap.css" rel="stylesheet">
+</head>
+
+<body>
+	<!-- Header -->
+	<div class="container-fluid bg-light mb-5">
+		<div class="container bg-light py-5">
+			<div class="row">
+				<div class="col-9">
+					<h1 class="display-5 fw-bold">Alt Text Creator <span id="version"></span> is now installed!</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Main container -->
+	<div class="container">
+		<div class="row">
+			<!-- Main settings -->
+			<div class="col-md-8">
+				<h2>How to use</h2>
+				<p>This extension uses the <a href="https://platform.openai.com/docs/guides/vision" target="_blank">GPT-4 with Vision</a> large language model to generate <a href="https://en.wikipedia.org/wiki/Alt_attribute" target="_blank">alternate text</a> for any image, which is read by search engines, screen readers, and other tools. You can right-click on any image and select "Generate Alt Text" to generate alternative text for an image. After a few seconds, a notification will appear with the generated text, which is automatically copied to your clipboard.</p>
+				<p>You must <a href="https://platform.openai.com/api-keys" target="_blank">create an OpenAI API key</a> and paste it in the below settings. OpenAI charges for API access after free credit runs out, and you can <a href="https://openai.com/pricing#:~:text=Vision%20pricing%20calculator" target="_blank">check current pricing</a> from the OpenAI website (and click the "Low Resolution" checkbox). This extension uses the Low Resolution mode and caches responses locally to reduce costs as much as possible.</p>
+				<p>The generated alternate text might be incorrect sometimes. Be sure to always follow <a href="https://support.microsoft.com/en-us/office/everything-you-need-to-know-to-write-effective-alt-text-df98f884-ca3d-456c-807b-1a1fa82f5dc2">best practices for writing alt text</a>!</p>
+				<h2>Settings</h2>
+				<!-- Image -->
+				<div class="mb-3">
+					<label for="alt-text-generator" class="form-label">Text generation service</label>
+					<select id="alt-text-generator" class="form-select" aria-labelledby="alt-text-generator-help">
+						<option value="gpt4-vision">OpenAI GPT-4 Vision (requires API key)</option>
+					</select>
+				</div>
+				<!-- OpenAI API key -->
+				<div class="mb-3">
+					<label for="openai-key" class="form-label">OpenAI API Key</label>
+					<input type="text" class="form-control" id="openai-key" aria-describedby="openai-help" autocomplete="off">
+					<div id="alt-text-generator-help" class="form-text text-muted mb-2">
+						You can <a href="https://platform.openai.com/api-keys" target="_blank">create an key</a> from the OpenAI website.
+					</div>
+					<a href="https://platform.openai.com/usage" target="_blank">
+						<button type="button" class="btn btn-outline-primary w-100 mb-3">Check OpenAI API usage and costs</button>
+					</a>
+				</div>
+			</div>
+			<!-- Donation -->
+			<div class="col-md-4">
+				<h2>Donate</h2>
+				<p>If you find Alt Text Creator useful, please donate to support continued development. It would mean a lot!</p>
+				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Alt%20Text%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">
+					<button type="button" class="btn btn-success w-100 mb-3">Donate via PayPal</button>
+				</a>
+				<a href="https://cash.app/$corbdav" target="_blank">
+					<button type="button" class="btn btn-success w-100 mb-3">Donate via Cash App</button>
+				</a>
+				<p>Alt Text Creator is developed by <a href="https://corbin.io/?utm_source=Alt%20Text%20Extension">Corbin Davenport</a>.</p>
+				<h2>Need help?</h2>
+				<p>If something isn't working, or if you just want to chat with other users, <a href="https://github.com/corbindavenport/alt-text-creator" target="_blank">create an issue on GitHub</a> or <a href="https://discord.com/invite/59wfy5cNHw" target="_blank">join the Discord server</a>.</p>
+			</div>
+		</div>
+		<!-- Footer -->
+		<div class="row">
+			<div class="bg-light rounded-3 pt-3 pb-3 mt-5 mb-5">
+				Alt Text Creator uses code from <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a> and the GPT-4 with Vision API. You can find Alt Text Creator's source code <a href="https://github.com/corbindavenport/alt-text-creator" target="_blank">on GitHub</a>, under the GPL license.</div>
+		</div>
+	</div>
+
+	<script src="js/main.js"></script>
+
+</body>
+
+</html>
