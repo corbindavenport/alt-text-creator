@@ -6,4 +6,6 @@ Alt Text Creator is a browser extension that generates [alternate text](https://
 
 Store links coming soon!
 
+![Alt Text Creator screenshot showing right-click menu option and notification.](screen.png)
+
 This browser extension is not affiliated with OpenAI. The icon uses images from [Bootstrap Icons](https://icons.getbootstrap.com/).

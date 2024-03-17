@@ -17,11 +17,9 @@ async function setupOffscreenDocument(path) {
     contextTypes: ['OFFSCREEN_DOCUMENT'],
     documentUrls: [offscreenUrl]
   });
-
   if (existingContexts.length > 0) {
     return;
   }
-
   // create offscreen document
   if (creating) {
     await creating;
@@ -88,20 +86,20 @@ async function genAltTextGPT(imageUrl, openAIkey) {
     return responseData.error.message
   } else if (responseData.choices[0].message.content) {
     // Add information to local storage
-    const imagesdbTemp = (localData.imageAltDB || {})
-    imagesdbTemp[imageUrl] = responseData.choices[0].message.content
+    const imagesdbTemp = (localData.imageAltDB || {});
+    imagesdbTemp[imageUrl] = responseData.choices[0].message.content;
     // Limit the number of stored image descriptions to 100
     if (Object.keys(imagesdbTemp).length >= 100) {
       // Remove the oldest entry from the imageAltDB
-      const oldestImageUrl = Object.keys(imagesdbTemp)[0]
+      const oldestImageUrl = Object.keys(imagesdbTemp)[0];
       delete imagesdbTemp[oldestImageUrl]
     }
     // Save database back to storage
-    await chrome.storage.local.set({ imageAltDB: imagesdbTemp })
-    console.log('Saved alt text to storage:', imagesdbTemp[imageUrl])
-    return responseData.choices[0].message.content
+    await chrome.storage.local.set({ imageAltDB: imagesdbTemp });
+    console.log('Saved alt text to storage:', imagesdbTemp[imageUrl]);
+    return responseData.choices[0].message.content;
   } else {
-    return 'Unknown error'
+    return 'Unknown error';
   }
 }
 
@@ -111,7 +109,7 @@ async function initAltText(imageUrl) {
   const settings = await chrome.storage.sync.get();
   if ((settings.hasOwnProperty('openAIkey') && (settings.openAIkey != ''))) {
     // Generate alternate text
-    var response = await genAltTextGPT(imageUrl, settings.openAIkey)
+    var response = await genAltTextGPT(imageUrl, settings.openAIkey);
     // Set notification options
     var data = {
       'type': 'basic',
@@ -139,7 +137,7 @@ async function initAltText(imageUrl) {
         },5000);
     });
   } else {
-    showErrorNotif('You must provide an OpenAPI key. Click to open settings.', true)
+    showErrorNotif('You must provide an OpenAPI key. Click to open settings.', true);
   }
 }
 
@@ -161,7 +159,7 @@ function showErrorNotif(message, optionsLink) {
     })
   }
   // Display the notification
-  chrome.notifications.create(data, handleNotif)
+  chrome.notifications.create(data, handleNotif);
 }
 
 // Add context menu entry for generating alt text
@@ -175,13 +173,13 @@ chrome.contextMenus.create({
 chrome.contextMenus.onClicked.addListener(async function (info, tab) {
   console.log('Recieved page from context menu:', info)
   if (info.menuItemId === 'generate-alt') {
-    initAltText(info.srcUrl)
+    initAltText(info.srcUrl);
   }
 });
 
 // Close offscreen copy page when done
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action == 'closeOffscreen') {
-    chrome.offscreen.closeDocument()
+    chrome.offscreen.closeDocument();
   }
 })
