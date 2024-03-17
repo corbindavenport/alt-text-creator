@@ -1,6 +1,6 @@
 {
 	"manifest_version": 3,
-	"name": "Alt Text Creator",
+	"name": "Alt Text Creator with GPT-4 Vision",
 	"short_name": "Alt Text Creator",
 	"version": "1.0",
 	"author": "Corbin Davenport",
