@@ -1,8 +1,9 @@
+const isFirefox = chrome.runtime.getURL('').startsWith('moz-extension://')
+
 // Show welcome message
 chrome.runtime.onInstalled.addListener(async (details) => {
   if (details.reason === 'install' || details.reason === 'update') {
-    // This will be enabled later
-    // chrome.tabs.create({ 'url': chrome.runtime.getURL('welcome.html') });
+    chrome.tabs.create({ 'url': chrome.runtime.getURL('main.html') });
   };
 });
 
@@ -118,15 +119,25 @@ async function initAltText(imageUrl) {
       'message': response,
       'title': 'Alternate text copied to clipboard',
     }
-    // Copy text to clipboard using offscreen document
-    await setupOffscreenDocument('copy.html');
-    chrome.runtime.sendMessage({
-      type: 'copy-clipboard',
-      target: 'offscreen',
-      data: response
-    });
+    // Copy text to clipboard
+    if (isFirefox) {
+      await navigator.clipboard.writeText(response);
+    } else {
+      // Chromium browsers need to use an offscreen document
+      await setupOffscreenDocument('copy.html');
+      chrome.runtime.sendMessage({
+        type: 'copy-clipboard',
+        target: 'offscreen',
+        data: response
+      });
+    }
     // Display the notification
-    chrome.notifications.create(data);
+    chrome.notifications.create(data, function(id) {
+      // Close notification after five seconds
+      setTimeout(function(){
+        chrome.notifications.clear(id)
+        },5000);
+    });
   } else {
     showErrorNotif('You must provide an OpenAPI key. Click to open settings.', true)
   }
