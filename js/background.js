@@ -120,7 +120,7 @@ async function initAltText(imageUrl) {
       });
       // Display the notification
       chrome.notifications.create(data);
-    } else if (openAIRequest) {
+    } else {
       showErrorNotif('You must provide an OpenAPI key. Click to open settings.', true)
     }
 }

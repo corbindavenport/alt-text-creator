@@ -1,5 +1,5 @@
 // Add version number to welcome page
-document.querySelector('.version').innerHTML = chrome.runtime.getManifest().version;
+document.querySelector('#version').innerHTML = chrome.runtime.getManifest().version;
 
 // Read settings from storage
 chrome.storage.sync.get({
