@@ -89,6 +89,13 @@ async function genAltTextGPT(imageUrl, openAIkey) {
     // Add information to local storage
     const imagesdbTemp = (localData.imageAltDB || {})
     imagesdbTemp[imageUrl] = responseData.choices[0].message.content
+    // Limit the number of stored image descriptions to 100
+    if (Object.keys(imagesdbTemp).length >= 100) {
+      // Remove the oldest entry from the imageAltDB
+      const oldestImageUrl = Object.keys(imagesdbTemp)[0]
+      delete imagesdbTemp[oldestImageUrl]
+    }
+    // Save database back to storage
     await chrome.storage.local.set({ imageAltDB: imagesdbTemp })
     console.log('Saved alt text to storage:', imagesdbTemp[imageUrl])
     return responseData.choices[0].message.content
@@ -101,28 +108,28 @@ async function genAltTextGPT(imageUrl, openAIkey) {
 async function initAltText(imageUrl) {
   // Check for settings and API keys
   const settings = await chrome.storage.sync.get();
-    if ((settings.hasOwnProperty('openAIkey') && (settings.openAIkey != ''))) {
-      // Generate alternate text
-      var response = await genAltTextGPT(imageUrl, settings.openAIkey)
-      // Set notification options
-      var data = {
-        'type': 'basic',
-        'iconUrl': chrome.runtime.getURL('img/icon_x128.png'),
-        'message': response,
-        'title': 'Alternate text copied to clipboard',
-      }
-      // Copy text to clipboard using offscreen document
-      await setupOffscreenDocument('copy.html');
-      chrome.runtime.sendMessage({
-        type: 'copy-clipboard',
-        target: 'offscreen',
-        data: response
-      });
-      // Display the notification
-      chrome.notifications.create(data);
-    } else {
-      showErrorNotif('You must provide an OpenAPI key. Click to open settings.', true)
+  if ((settings.hasOwnProperty('openAIkey') && (settings.openAIkey != ''))) {
+    // Generate alternate text
+    var response = await genAltTextGPT(imageUrl, settings.openAIkey)
+    // Set notification options
+    var data = {
+      'type': 'basic',
+      'iconUrl': chrome.runtime.getURL('img/icon_x128.png'),
+      'message': response,
+      'title': 'Alternate text copied to clipboard',
     }
+    // Copy text to clipboard using offscreen document
+    await setupOffscreenDocument('copy.html');
+    chrome.runtime.sendMessage({
+      type: 'copy-clipboard',
+      target: 'offscreen',
+      data: response
+    });
+    // Display the notification
+    chrome.notifications.create(data);
+  } else {
+    showErrorNotif('You must provide an OpenAPI key. Click to open settings.', true)
+  }
 }
 
 // Function to display error notification
