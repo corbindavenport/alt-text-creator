@@ -149,7 +149,7 @@ function showErrorNotif(message, optionsLink) {
 // Add context menu entry for generating alt text
 chrome.contextMenus.create({
   id: 'generate-alt',
-  title: 'Generate Alt Text',
+  title: 'Create Alt Text',
   contexts: ['image']
 });
 
