@@ -4,7 +4,7 @@ Alt Text Creator is a browser extension that generates [alternate text](https://
 
 **You must supply your own API key from OpenAI for the extension to work.** Alt Text Creator uses the Low Resolution mode in the API and local caching to reduce the per-image processing cost. The [current pricing](https://openai.com/pricing#:~:text=Vision%20pricing%20calculator) is available on OpenAI's website.
 
-Store links coming soon!
+[**Download for Firefox**](https://addons.mozilla.org/en-US/firefox/addon/alt-text-creator/)
 
 ![Alt Text Creator screenshot showing right-click menu option and notification.](screen.png)
 
