@@ -1,12 +1,5 @@
 const isFirefox = chrome.runtime.getURL('').startsWith('moz-extension://')
 
-// Show welcome message
-chrome.runtime.onInstalled.addListener(async (details) => {
-  if (details.reason === 'install' || details.reason === 'update') {
-    chrome.tabs.create({ 'url': chrome.runtime.getURL('main.html') });
-  };
-});
-
 // Handle offscreen document for clipboard operations
 let creating; // A global promise to avoid concurrency issues
 async function setupOffscreenDocument(path) {
@@ -162,11 +155,19 @@ function showErrorNotif(message, optionsLink) {
   chrome.notifications.create(data, handleNotif);
 }
 
-// Add context menu entry for generating alt text
-chrome.contextMenus.create({
-  id: 'generate-alt',
-  title: 'Create Alt Text',
-  contexts: ['image']
+chrome.runtime.onInstalled.addListener(async (details) => {
+  // Wait for storage sync
+  await chrome.storage.sync.get();
+  // Show welcome message
+  if (details.reason === 'install' || details.reason === 'update') {
+    chrome.tabs.create({ 'url': chrome.runtime.getURL('main.html') });
+  };
+  // Create context menu item
+  chrome.contextMenus.create({
+    id: 'generate-alt',
+    title: 'Create Alt Text',
+    contexts: ['image']
+  });
 });
 
 // Handle context menu clicks
