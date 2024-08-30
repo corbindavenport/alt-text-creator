@@ -1,10 +1,10 @@
 {
 	"manifest_version": 3,
-	"name": "Alt Text Creator with GPT-4 Vision",
+	"name": "Alt Text Creator with GPT-4o",
 	"short_name": "Alt Text Creator",
 	"version": "1.2",
 	"author": "Corbin Davenport",
-	"description": "Creates alternate text for images using the GPT-4 model from OpenAI.",
+	"description": "Creates alternate text for images using the GPT-4o model from OpenAI.",
 	"homepage_url": "https://github.com/corbindavenport/alt-text-creator",
 	"options_ui": {
 		"page": "main.html",

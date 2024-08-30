@@ -17,6 +17,7 @@
 			<div class="row">
 				<div class="col-9">
 					<h1 class="display-5 fw-bold">Alt Text Creator <span id="version"></span> is now installed!</h1>
+					<p>This update adds support for GPT-4o and GPT-4o Mini! Check out the <a href="https://github.com/corbindavenport/alt-text-creator/releases/latest" target="_blank">full changelog</a> for more details.</p>
 				</div>
 			</div>
 		</div>
@@ -31,16 +32,19 @@
 				<div class="mb-3">
 					<label for="alt-text-generator" class="form-label">Text generation service</label>
 					<select id="alt-text-generator" class="form-select" aria-labelledby="alt-text-generator-help">
-						<option value="gpt-4o-mini">OpenAI GPT-4o Mini (requires OpenAI API key)</option>
-						<option value="gpt-4o">OpenAI GPT-4o (requires OpenAI API key)</option>
+						<option value="gpt-4o-mini">OpenAI GPT-4o Mini (faster, less expensive)</option>
+						<option value="gpt-4o">OpenAI GPT-4o</option>
 					</select>
+					<div id="alt-text-generator-help" class="form-text text-muted mb-2">
+						OpenAI models require a valid API key. Alt Text Generator uses GPT-4o by default.
+					</div>
 				</div>
 				<!-- OpenAI API key -->
 				<div class="mb-3">
 					<label for="openai-key" class="form-label">OpenAI API Key</label>
 					<input type="text" class="form-control" id="openai-key" aria-describedby="openai-help" autocomplete="off">
-					<div id="alt-text-generator-help" class="form-text text-muted mb-2">
-						You can <a href="https://platform.openai.com/api-keys" target="_blank">create an key</a> from the OpenAI website.
+					<div id="openai-help" class="form-text text-muted mb-2">
+						You can <a href="https://platform.openai.com/api-keys" target="_blank">create a key</a> from the OpenAI website.
 					</div>
 					<a href="https://platform.openai.com/usage" target="_blank">
 						<button type="button" class="btn btn-outline-primary w-100 mb-3">Check OpenAI API usage and costs</button>
