@@ -28,7 +28,7 @@ async function setupOffscreenDocument(path) {
 }
 
 // Function to generate alternate text using OpenAI API
-async function genAltTextGPT(imageUrl, openAIkey) {
+async function genAltTextGPT(imageUrl, openAIkey, modelName) {
   const localData = await chrome.storage.local.get({
     imageAltDB: {}
   });
@@ -40,7 +40,6 @@ async function genAltTextGPT(imageUrl, openAIkey) {
   // Set up image request
   const url = 'https://api.openai.com/v1/chat/completions';
   const data = {
-    "model": "gpt-4-vision-preview",
     "messages": [
       {
         "role": "user",
@@ -61,8 +60,15 @@ async function genAltTextGPT(imageUrl, openAIkey) {
     ],
     max_tokens: 300,
   };
-  console.log('Sending to OpenAI:', data);
+  // Set AI model
+  if (modelName === 'gpt-4o') {
+    data.model = 'gpt-4o';
+  } else {
+    // GPT-4o Mini is both the default AI model and a user-selectable option
+    data.model = 'gpt-4o-mini';
+  }
   // Send request
+  console.log('Sending to OpenAI:', data);
   const fetchRequest = {
     method: "POST",
     headers: {
@@ -102,7 +108,7 @@ async function initAltText(imageUrl) {
   const settings = await chrome.storage.sync.get();
   if ((settings.hasOwnProperty('openAIkey') && (settings.openAIkey != ''))) {
     // Generate alternate text
-    var response = await genAltTextGPT(imageUrl, settings.openAIkey);
+    var response = await genAltTextGPT(imageUrl, settings.openAIkey, settings.altTextGenerator);
     // Set notification options
     var data = {
       'type': 'basic',
