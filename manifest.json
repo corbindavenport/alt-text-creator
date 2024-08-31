@@ -16,24 +16,14 @@
 		"storage",
 		"offscreen",
 		"clipboardWrite",
-		"notifications",
-		"sidePanel"
+		"notifications"
 	],
 	"host_permissions": [
 		"https://api.openai.com/*"
 	],
-	"sidebar_action": {
-		"default_title": "Alt Text Creator",
-		"default_panel": "sidepanel.html",
-		"default_icon": "img/icon_x32.png"
-	},
-	"side_panel": {
-		"default_path": "sidepanel.html"
-	},
 	"background": {
 		"service_worker": "js/background.js",
 		"scripts": [
-			"js/shared.js",
 			"js/background.js"
 		]
 	},
