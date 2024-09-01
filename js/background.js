@@ -206,12 +206,13 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   if (details.reason === 'install' || details.reason === 'update') {
     chrome.tabs.create({ 'url': chrome.runtime.getURL('main.html') });
   };
-  // Create context menu item
-  chrome.contextMenus.create({
-    id: 'generate-alt',
-    title: 'Create Alt Text',
-    contexts: ['image']
-  });
+});
+
+// Create context menu item
+chrome.contextMenus.create({
+  id: 'generate-alt',
+  title: 'Create Alt Text',
+  contexts: ['image']
 });
 
 // Handle context menu clicks
