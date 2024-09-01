@@ -4,7 +4,8 @@ document.querySelector('#version').innerHTML = chrome.runtime.getManifest().vers
 // Read settings from storage
 chrome.storage.sync.get({
   altTextGenerator: 'gpt-4o-mini',
-  openAIkey: ''
+  openAIkey: '',
+  customIp: ''
 }, function (data) {
   var model = '';
   // Migrate discontinued gpt4-vision option to gpt-4o-mini
@@ -20,6 +21,8 @@ chrome.storage.sync.get({
   document.querySelector('#alt-text-generator').value = model;
   // OpenAI API key
   document.querySelector('#openai-key').value = data.openAIkey;
+  // Custom server IP
+  document.querySelector('#custom-server-ip').value = data.customIp;
 });
 
 // Save settings after any input change
@@ -29,7 +32,9 @@ document.querySelectorAll('input,select').forEach(function (el) {
       // Text generation service
       altTextGenerator: document.querySelector('#alt-text-generator').value,
       // OpenAI API key
-      openAIkey: document.querySelector('#openai-key').value
+      openAIkey: document.querySelector('#openai-key').value,
+      // Custom server IP
+      customIp: document.querySelector('#custom-server-ip').value
     })
   })
 })

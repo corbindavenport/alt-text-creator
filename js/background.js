@@ -27,8 +27,27 @@ async function setupOffscreenDocument(path) {
   }
 }
 
+// Function to convert images into data URL format
+// This is used for sending images to a local server
+async function fetchImageAsDataURL(imageUrl) {
+  try {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  } catch (error) {
+    console.error('Error fetching image:', error);
+    throw error;
+  }
+}
+
+
 // Function to generate alternate text using OpenAI API
-async function genAltTextGPT(imageUrl, openAIkey, modelName) {
+async function genAltTextGPT(imageUrl, openAIkey, modelName, customIp) {
   const localData = await chrome.storage.local.get({
     imageAltDB: {}
   });
@@ -37,16 +56,25 @@ async function genAltTextGPT(imageUrl, openAIkey, modelName) {
     console.log("Image was already processed, no need to call API again.")
     return localData.imageAltDB[imageUrl]
   }
+  // Set up prompt and request URL
+  var prompt, requestUrl;
+  if (modelName === 'local-server') {
+    prompt = "Create a caption. Your response should be one or two sentences. Do not write 'the' as the first word. Do not write quotation marks.";
+    requestUrl = `http://${customIp}/v1/chat/completions`;
+  } else {
+    requestUrl = 'https://api.openai.com/v1/chat/completions';
+    // This works best with GPT-4 and GPT-4o
+    prompt = "Generate alt text for an image that showcases the key visual elements, is concise, and is under 125 characters. Do not write quotetation marks or 'Alt Text: '.";
+  }
   // Set up image request
-  const url = 'https://api.openai.com/v1/chat/completions';
-  const data = {
+  var data = {
     "messages": [
       {
         "role": "user",
         "content": [
           {
             "type": "text",
-            "text": "Generate alt text for an image that showcases the key visual elements, is concise, and under 125 characters. Do not write quotetation marks or 'Alt Text: '."
+            "text": prompt
           },
           {
             "type": "image_url",
@@ -60,16 +88,21 @@ async function genAltTextGPT(imageUrl, openAIkey, modelName) {
     ],
     max_tokens: 300,
   };
-  // Set AI model
+  // Set AI model and other user settings
   if (modelName === 'gpt-4o') {
     data.model = 'gpt-4o';
+  } else if (modelName === 'local-server') {
+    // Convert image to base64 encoding, ML Studio doesn't support external images
+    await fetchImageAsDataURL(imageUrl)
+      .then(dataUrl => data['messages'][0]['content'][1]['image_url']['url'] = dataUrl)
+      .catch(error => console.error('Error:', error));
   } else {
     // GPT-4o Mini is both the default AI model and a user-selectable option
     data.model = 'gpt-4o-mini';
   }
-  // Send request
-  console.log('Sending to OpenAI:', data);
-  const fetchRequest = {
+  // Configure fetch request
+  console.log('Sending network request:', data);
+  var fetchRequest = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -77,9 +110,14 @@ async function genAltTextGPT(imageUrl, openAIkey, modelName) {
     },
     body: JSON.stringify(data),
   };
-  var response = await fetch(url, fetchRequest)
+  // Remove OpenAI key if using a custom server
+  if (modelName === 'local-server') {
+    delete fetchRequest['headers']['Authorization'];
+  }
+  // Send fetch request
+  var response = await fetch(requestUrl, fetchRequest)
   var responseData = await response.json()
-  console.log("OpenAI API repsonse:", responseData)
+  console.log("API repsonse:", responseData)
   if (responseData.error) {
     // Show error
     return responseData.error.message
@@ -106,9 +144,9 @@ async function genAltTextGPT(imageUrl, openAIkey, modelName) {
 async function initAltText(imageUrl) {
   // Check for settings and API keys
   const settings = await chrome.storage.sync.get();
-  if ((settings.hasOwnProperty('openAIkey') && (settings.openAIkey != ''))) {
+  if ((settings.hasOwnProperty('openAIkey') && (settings.openAIkey != '')) || settings.customIp) {
     // Generate alternate text
-    var response = await genAltTextGPT(imageUrl, settings.openAIkey, settings.altTextGenerator);
+    var response = await genAltTextGPT(imageUrl, settings.openAIkey, settings.altTextGenerator, settings.customIp);
     // Set notification options
     var data = {
       'type': 'basic',
@@ -129,11 +167,11 @@ async function initAltText(imageUrl) {
       });
     }
     // Display the notification
-    chrome.notifications.create(data, function(id) {
+    chrome.notifications.create(data, function (id) {
       // Close notification after five seconds
-      setTimeout(function(){
+      setTimeout(function () {
         chrome.notifications.clear(id)
-        },5000);
+      }, 5000);
     });
   } else {
     showErrorNotif('You must provide an OpenAPI key. Click to open settings.', true);

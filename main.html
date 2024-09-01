@@ -34,6 +34,7 @@
 					<select id="alt-text-generator" class="form-select" aria-labelledby="alt-text-generator-help">
 						<option value="gpt-4o-mini">OpenAI GPT-4o Mini (faster, less expensive)</option>
 						<option value="gpt-4o">OpenAI GPT-4o</option>
+						<option value="local-server">Custom local server</option>
 					</select>
 					<div id="alt-text-generator-help" class="form-text text-muted mb-2">
 						OpenAI models require a valid API key. Alt Text Generator uses GPT-4o by default.
@@ -49,6 +50,14 @@
 					<a href="https://platform.openai.com/usage" target="_blank">
 						<button type="button" class="btn btn-outline-primary w-100 mb-3">Check OpenAI API usage and costs</button>
 					</a>
+				</div>
+				<!-- Local server settings -->
+				<div class="mb-3">
+					<label for="custom-server-ip" class="form-label">Custom server IP</label>
+					<input type="text" class="form-control" id="custom-server-ip" aria-describedby="custom-help" autocomplete="off" placeholder="localhost:1234">
+					<div id="custom-help" class="form-text text-muted mb-2">
+						You can use a custom server running an OpenAI-like API. The text generation service must be set to "Custom local server". See the <a href="https://github.com/corbindavenport/alt-text-creator/blob/main/CUSTOM.md">documentation</a> for more information.
+					</div>
 				</div>
 				<!-- How to use -->
 				<h2>How to use</h2>
