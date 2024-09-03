@@ -4,6 +4,8 @@ You can use use Alt Text Creator with a local server running an OpenAI-like API 
 
 This was tested using [LM Studio](https://lmstudio.ai/) and the [Llava-v1.5-7B-GGUF](https://huggingface.co/second-state/Llava-v1.5-7B-GGUF) model. Results were generally less consistent than GPT-4o and GPT-4o Mini.
 
+**NOTE:** Images on web servers with CORS protection are [currently broken](https://github.com/corbindavenport/alt-text-creator/issues/6) when using the custom server option.
+
 ### How to set up a custom server
 
 1. Download [ML Studio](https://lmstudio.ai/) and open it.
