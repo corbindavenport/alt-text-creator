@@ -8,7 +8,7 @@ This was tested using [LM Studio](https://lmstudio.ai/) and the [Llava-v1.5-7B-G
 
 ### How to set up a custom server
 
-1. Download [ML Studio](https://lmstudio.ai/) and open it.
+1. Download [LM Studio](https://lmstudio.ai/) and open it.
 2. In the Discover tab, search for an AI model with vision capabilites (like LLaVA 1.5) and download it.
 3. After the download is complete, switch to the Developer tab.
 4. Click the "Select a model to load" dropdown menu and select the vision model you downloaded.

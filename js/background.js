@@ -92,7 +92,7 @@ async function genAltTextGPT(imageUrl, openAIkey, modelName, customIp) {
   if (modelName === 'gpt-4o') {
     data.model = 'gpt-4o';
   } else if (modelName === 'local-server') {
-    // Convert image to base64 encoding, ML Studio doesn't support external images
+    // Convert image to base64 encoding, LM Studio doesn't support external images
     await fetchImageAsDataURL(imageUrl)
       .then(dataUrl => data['messages'][0]['content'][1]['image_url']['url'] = dataUrl)
       .catch(error => console.error('Error:', error));
